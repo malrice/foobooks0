@@ -10,7 +10,7 @@ $searchTerm = $_GET['searchTerm'];
 # Load Book data
 $booksJson= file_get_contents( 'books.json');
 $books = json_decode($booksJson, true);
-
+dump($books['The Bell Jar']);
 
 #filter book data according to  search term
 foreach($books as $title => $book){

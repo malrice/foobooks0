@@ -17,6 +17,19 @@ require 'logic.php';
 <body>
 <h1>Foobooks0</h1>
 
+
+<?php foreach($books as $title => $book): ?>
+    <div class ='book'>
+       <?= $title ?> by <?= $book['author'] ?>
+       <img src='<?=$book['cover_url'];?>' alt='Cover photo for the book <?=$title;?>'>
+
+    </div>
+<?php endforeach ?>
+
+<div class ='book'>
+    <?= $title?> by <? $book['author']?>
+
+<!--
 <form method='GET' action='search.php'>
 
     <label>Search for a book:
@@ -36,8 +49,7 @@ require 'logic.php';
     <?=$title ?> by <?=$book["author"] ?>
     <img src='<?=$book['cover_url']?>' alt='Cover photo for the book <?=$title ?>'
     </div>
-
 <?php endforeach?>
-<?php endif; ?>
+<?php endif; ?> -->
 </body>
 </html>

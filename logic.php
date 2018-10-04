@@ -1,12 +1,6 @@
 <?php
+ $booksJson = file_get_contents('books.json');
 
-session_start();
+$books = json_decode($booksJson, true);
 
-if($_SESSION['results']){
-    $results = $_SESSION['results'];
-
-    $books = $results['books'];
-    $searchTerm = $results['searchTerm'];
-}
-
-session_unset();
+dump($books["The Bell Jar"]['author']);
