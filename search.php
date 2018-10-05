@@ -4,26 +4,34 @@ session_start();
 
 require('helpers.php');
 
-#Get data from form request
+# Get data from form request
 $searchTerm = $_GET['searchTerm'];
 
-# Load Book data
-$booksJson= file_get_contents( 'books.json');
+# Load book data
+
+$booksJson = file_get_contents('books.json');
 $books = json_decode($booksJson, true);
-dump($books['The Bell Jar']);
 
-#filter book data according to  search term
+#filter book data according to search term
+#       data       key      value
 foreach($books as $title => $book){
-    if($title != $searchTerm){
+    if($title != $searchTerm ){
+    #         array   key
         unset($books[$title]);
-     }
-
+    }
 }
 
-#Store our data in the session
+#storing data in the session
+        #   key        values
 $_SESSION['results'] = [
-    'searchTerm' => $searchTerm,
-    'books' => $books
+     #storing array of data
+    'searchTerm' => $searchTerm, #saving initial search term
+    'books' => $books, #saving book data
+    'bookCount' => count($books),
 ];
 
+
+dump($searchTerm);
+
+#redirect back to form
 header('Location: index.php');
