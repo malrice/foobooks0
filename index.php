@@ -20,18 +20,41 @@ require 'logic.php';
 <h1>Foobooks0</h1>
 <p> Foobooks0 is a small library of books</p>
 
-<form method='GET' action='search.php'>
+<form method='POST' action='search.php'>
     <label> Search for a book by title<br/>
-    <!--prefills the box with search term -->
-        <input type='text' name='searchTerm' value='<?php if(isset($searchTerm)) echo $searchTerm;?>' >
+            <!--prefills the box with search term -->
+        <input type='text' name='searchTerm' value='<?php if (isset($searchTerm)) echo $searchTerm; ?>'>
+        <br>
+        <label>
+            <input type='checkbox'
+                   name='caseSensitive' <?php if (isset($caseSensitive) and $caseSensitive) echo 'checked' ?>
+            <p> Case Sensitive</p>
+        </label>
 
-    </label>
-    <br/>
-    <input type='submit' value='Search'>
+</label>
+<br/>
+<input type='submit' value='Search'>
+<?php if ($hasErrors): ?>
+    <div class='alert alert-danger'>
+        <ul>
+
+            <?php foreach ($errors as $error): ?>
+                <li>
+                    <?= $error ?></li>
+            <?php endforeach; ?>
+
+        </ul>
+    </div>
+
+<?php endif; ?>
 </form>
+
+
+<?php if(!$hasErrors): ?>
+<div id='results'>
 <?php if (isset($searchTerm)): ?>
     <div class='alert alert-success' role='alert'>
-    You searched for <em><?= $searchTerm ?></em>
+        You searched for <em><?= $searchTerm ?></em>
     </div>
 <?php endif; ?>
 
@@ -53,10 +76,10 @@ require 'logic.php';
                 </div>
                 <img src='<?= $book['cover_url']; ?>' alt='Cover photo for the book <?= $title; ?>'>
         </li>
-        </ul>
-        </div>
     <?php endforeach ?>
+    </ul>
 <?php endif ?>
-
+</div>
+<?php endif ?>
 </body>
 </html>

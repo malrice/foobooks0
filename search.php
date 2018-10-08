@@ -1,37 +1,43 @@
 <?php
+require 'Book.php';
+require 'Form.php';
+require('helpers.php');
+
+use Foobooks0\Book;
+
 
 session_start();
 
-require('helpers.php');
+$book = new Book('books.json');
+$form = new DWA\Form($_POST);
 
 # Get data from form request
-$searchTerm = $_GET['searchTerm'];
+$searchTerm = $form->get('searchTerm');
 
-# Load book data
+$caseSensitive = $form->has('caseSensitive');
 
-$booksJson = file_get_contents('books.json');
-$books = json_decode($booksJson, true);
 
-#filter book data according to search term
-#       data       key      value
-foreach($books as $title => $book){
-    if($title != $searchTerm ){
-    #         array   key
-        unset($books[$title]);
-    }
+#error reporting
+$errors = $form->validate([
+    'searchTerm' =>'required|alphaNumeric',
+
+]);
+
+if(!$form->hasErrors){
+    $books = $book->getByTitle($caseSensitive, $searchTerm);
 }
 
 #storing data in the session
-        #   key        values
+#   key        values
 $_SESSION['results'] = [
-     #storing array of data
+    #storing array of data
+    'errors' => $errors,
+    'hasErrors' => $form->hasErrors,
     'searchTerm' => $searchTerm, #saving initial search term
     'books' => $books, #saving book data
     'bookCount' => count($books),
+    'caseSensitive' => $caseSensitive
 ];
-
-
-dump($searchTerm);
 
 #redirect back to form
 header('Location: index.php');
